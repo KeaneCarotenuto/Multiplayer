@@ -8,12 +8,12 @@ public class PlayerAttack : NetworkBehaviour
 
     public Transform spearPosition;
 
-    public GameObject currentSpear;
+    //public GameObject currentSpear;
 
-    public List<GameObject> newSpears;
-    public List<GameObject> oldSpears;
+    //public List<GameObject> newSpears;
+    //public List<GameObject> oldSpears;
 
-    public float maxSpears;
+    //public float maxSpears;
 
     public GameObject spearPrefab;
 
@@ -24,11 +24,11 @@ public class PlayerAttack : NetworkBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        if (currentSpear)
-        {
-            currentSpear.GetComponent<Spear>().isHeld = true;
-            currentSpear.GetComponent<Spear>().isThrown = false;
-        }
+        //if (currentSpear)
+        //{
+        //    currentSpear.GetComponent<Spear>().isHeld = true;
+        //    currentSpear.GetComponent<Spear>().isThrown = false;
+        //}
     }
 
     // Update is called once per frame
@@ -36,17 +36,17 @@ public class PlayerAttack : NetworkBehaviour
     {
         if (isLocalPlayer)
         {
-            for (int i = oldSpears.Count - 1; i >= 0; i--)
-            {
-                if (!oldSpears[i]) oldSpears.RemoveAt(i);
-            }
+            //for (int i = oldSpears.Count - 1; i >= 0; i--)
+            //{
+            //    if (!oldSpears[i]) oldSpears.RemoveAt(i);
+            //}
 
-            if (currentSpear == null && oldSpears.Count < maxSpears)
-            {
-                //LocalLoadNewSpear();
-            }
+            //if (currentSpear == null && oldSpears.Count < maxSpears)
+            //{
+            //    //LocalLoadNewSpear();
+            //}
 
-            if (Input.GetMouseButtonDown(0) && oldSpears.Count < maxSpears)
+            if (Input.GetMouseButtonDown(0) /*&& oldSpears.Count < maxSpears*/)
             {
                 //if (isClient)
                 //{
@@ -68,21 +68,15 @@ public class PlayerAttack : NetworkBehaviour
                 CmdServerLoadNewSpear();
             }
 
-            if (Input.GetMouseButtonDown(1) && oldSpears.Count > 0)
-            {
-                oldSpears[0].GetComponent<Spear>().returnToHand = true;
-                oldSpears[0].transform.parent = spearPosition;
+            //if (Input.GetMouseButtonDown(1) && oldSpears.Count > 0)
+            //{
+            //    oldSpears[0].GetComponent<Spear>().returnToHand = true;
+            //    oldSpears[0].transform.parent = spearPosition;
 
-                newSpears.Add(oldSpears[0]);
-                oldSpears.RemoveAt(0);
-            }
+            //    newSpears.Add(oldSpears[0]);
+            //    oldSpears.RemoveAt(0);
+            //}
         }
-    }
-
-    [ClientRpc]
-    void noPar()
-    {
-        currentSpear.transform.parent = null;
     }
 
     [Command]
@@ -103,21 +97,21 @@ public class PlayerAttack : NetworkBehaviour
         //NetworkServer.SpawnObjects();
     }
 
-    private void LocalLoadNewSpear()
-    {
-        currentSpear = newSpears[0];
-        newSpears.RemoveAt(0);
+    //private void LocalLoadNewSpear()
+    //{
+    //    currentSpear = newSpears[0];
+    //    newSpears.RemoveAt(0);
 
-        currentSpear.SetActive(true);
+    //    currentSpear.SetActive(true);
 
-        currentSpear.transform.localPosition = Vector3.zero;
+    //    currentSpear.transform.localPosition = Vector3.zero;
 
-        //currentSpear = Instantiate(spearPrefab, spearPosition, false);
-        currentSpear.GetComponent<Spear>().playerCam = playerCamera;
-        currentSpear.GetComponent<Spear>().player = gameObject;
-        currentSpear.GetComponent<Spear>().playerSpearPos = spearPosition;
-        currentSpear.GetComponent<Spear>().isHeld = true;
-        currentSpear.GetComponent<Spear>().isThrown = false;
-        currentSpear.GetComponent<Spear>().returnToHand = false;
-    }
+    //    //currentSpear = Instantiate(spearPrefab, spearPosition, false);
+    //    currentSpear.GetComponent<Spear>().playerCam = playerCamera;
+    //    currentSpear.GetComponent<Spear>().player = gameObject;
+    //    currentSpear.GetComponent<Spear>().playerSpearPos = spearPosition;
+    //    currentSpear.GetComponent<Spear>().isHeld = true;
+    //    currentSpear.GetComponent<Spear>().isThrown = false;
+    //    currentSpear.GetComponent<Spear>().returnToHand = false;
+    //}
 }

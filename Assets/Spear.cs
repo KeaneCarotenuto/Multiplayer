@@ -56,77 +56,64 @@ public class Spear : NetworkBehaviour
                     {
                         if (!_hit.transform.parent.GetComponent<Spear>().isThrown && !_hit.transform.parent.GetComponent<Spear>().isHeld)
                         {
-                            Stick(_hit.transform.parent);
-                            //transform.parent = _hit.transform.parent;
+                            FlipVel();
                             break;
                         }
                     }
                     else
                     {
-                        Stick(_hit.transform);
-                        //transform.parent = _hit.transform;
-                        break;
-                    }
-                }
-
-
-            }
-            else
-            {
-                if (isHeld)
-                {
-
-                    RaycastHit[] HitInfo = Physics.RaycastAll(playerCam.transform.position, playerCam.transform.forward, 100f, hitMask);
-
-                    foreach (RaycastHit _hit in HitInfo)
-                    {
-                        if (_hit.transform.parent && _hit.transform.parent.GetComponent<Spear>())
+                        if (_hit.transform.root.GetComponent<PlayerMovement>())
                         {
-                            if (!_hit.transform.parent.GetComponent<Spear>().isThrown && !_hit.transform.parent.GetComponent<Spear>().isHeld)
-                            {
-                                transform.LookAt(_hit.point, Vector3.up);
-                                break;
-                            }
+                            FlipVel();
                         }
                         else
                         {
-                            transform.LookAt(_hit.point, Vector3.up);
-                            break;
+                            Stick();
                         }
-                    }
-                }
-                else
-                {
-                    //transform.position = landPos;
-                }
 
-                if (returnToHand)
-                {
-                    tip.GetComponent<Collider>().enabled = false;
-                    body.GetComponent<Collider>().enabled = false;
-                    transform.position = Vector3.Lerp(transform.position, playerSpearPos.position, 0.5f);
-                    if (Vector3.Distance(transform.position, playerSpearPos.position) < 0.25f) {
-                        returnToHand = false;
-                        gameObject.SetActive(false);
+                        break;
                     }
                 }
             }
         }
     }
 
+    private void FlipVel()
+    {
+        velocity *= -Random.Range(0.8f, 0.95f);
+    }
+
     public void Throw()
     {
+        RaycastHit[] HitInfo = Physics.RaycastAll(playerCam.transform.position, playerCam.transform.forward, 100f, hitMask);
+
+        foreach (RaycastHit _hit in HitInfo)
+        {
+            if (_hit.transform.parent && _hit.transform.parent.GetComponent<Spear>())
+            {
+                if (!_hit.transform.parent.GetComponent<Spear>().isThrown && !_hit.transform.parent.GetComponent<Spear>().isHeld)
+                {
+                    transform.LookAt(_hit.point, Vector3.up);
+                    break;
+                }
+            }
+            else
+            {
+                transform.LookAt(_hit.point, Vector3.up);
+                break;
+            }
+        }
+
         isThrown = true;
         isHeld = false;
         transform.parent = null;
         velocity = transform.forward * throwSpeed;
     }
 
-    public void Stick(Transform _p)
+    public void Stick()
     {
         landPos = transform.position;
-        transform.parent = _p;
+        transform.parent = null;
         isThrown = false;
-        Debug.Log("what");
     }
 }
