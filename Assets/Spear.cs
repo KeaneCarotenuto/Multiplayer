@@ -115,5 +115,38 @@ public class Spear : NetworkBehaviour
         landPos = transform.position;
         transform.parent = null;
         isThrown = false;
+
+
+
+        if (isServer)
+        {
+            RpcUpdateAll(transform);
+        }
+
+        //if (true)
+        //{
+        //    transform.localScale *= 10;
+        //    CmdUpdateAll(transform);
+        //}
+    }
+
+    [ClientRpc]
+    void RpcUpdateAll(Transform _trans)
+    {
+        transform.position = _trans.position;
+        transform.rotation = _trans.rotation;
+    }
+
+    [Command(requiresAuthority = false)]
+    void CmdUpdateAll(Transform _trans)
+    {
+        GameObject s = Instantiate(spearPrefab, _trans.position, _trans.rotation, null);
+        NetworkServer.Spawn(s);
+
+        s.transform.position = _trans.position;
+        s.transform.rotation = _trans.rotation;
+        s.transform.localScale = _trans.localScale;
+
+        RpcUpdateAll(_trans);
     }
 }
