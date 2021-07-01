@@ -28,6 +28,10 @@ public class Spear : NetworkBehaviour
 
     public GameObject spearPrefab;
 
+    public float lifetime = 10.0f;
+
+    public float spawnTime = 0;
+
     Vector3 landPos;
 
     // Start is called before the first frame update
@@ -40,6 +44,12 @@ public class Spear : NetworkBehaviour
     {
         if (isServer)
         {
+            if (Time.time - spawnTime >= lifetime)
+            {
+                NetworkServer.UnSpawn(gameObject);
+                NetworkServer.Destroy(gameObject);
+            }
+
             if (isThrown)
             {
                 velocity.y += gravity * Time.deltaTime;
