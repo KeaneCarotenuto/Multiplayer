@@ -39,6 +39,16 @@ public class Spear : NetworkBehaviour
     {
     }
 
+    private void Awake()
+    {
+        
+    }
+
+    private void OnLevelWasLoaded()
+    {
+        Destroy(gameObject);
+    }
+
     // Update is called once per frame
     void FixedUpdate()
     {

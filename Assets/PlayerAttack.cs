@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerAttack : NetworkBehaviour
 {
@@ -22,11 +23,28 @@ public class PlayerAttack : NetworkBehaviour
         
     }
 
+    private void Awake()
+    {
+        Time.timeScale = 1.0f;
+        DontDestroyOnLoad(gameObject);
+    }
+
     // Update is called once per frame
     void Update()
     {
+        
+
         if (isLocalPlayer)
         {
+            if (Input.GetKeyDown(KeyCode.R))
+            {
+                //  SceneManager.LoadScene(0);
+
+                ReloadScene();
+
+                //NetworkServer.SpawnObjects();
+            }
+
             if (Physics.CheckSphere(transform.position, 0.5f, noThrow))
             {
                 noThrowScreen.SetActive(true);
@@ -44,6 +62,12 @@ public class PlayerAttack : NetworkBehaviour
         {
             noThrowScreen.SetActive(false);
         }
+    }
+
+    [Command]
+    private void ReloadScene()
+    {
+        NetworkManager.singleton.ServerChangeScene("SampleScene");
     }
 
     [Command]
