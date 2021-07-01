@@ -44,6 +44,8 @@ public class Spear : NetworkBehaviour
     {
         if (isServer)
         {
+            transform.localScale -= new Vector3(0.1f * Time.deltaTime, 0.1f * Time.deltaTime, 0);
+
             if (Time.time - spawnTime >= lifetime)
             {
                 NetworkServer.UnSpawn(gameObject);
