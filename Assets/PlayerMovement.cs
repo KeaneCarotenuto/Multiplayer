@@ -23,7 +23,20 @@ public class PlayerMovement : NetworkBehaviour
     {
         if (isLocalPlayer)
         {
-            isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
+            isGrounded = false;
+
+            Collider[] hits = Physics.OverlapSphere(groundCheck.position, groundDistance, groundMask);
+
+            foreach (Collider _hit in hits)
+            {
+                if (_hit.transform.root == gameObject.transform)
+                {
+                    continue;
+                }
+
+                isGrounded = true;
+                break;
+            }
 
             if (isGrounded && velocity.y < 0)
             {
@@ -45,6 +58,8 @@ public class PlayerMovement : NetworkBehaviour
             velocity.y += gravity * Time.deltaTime;
 
             controller.Move(velocity * Time.deltaTime);
+
+            
         }
     }
 }

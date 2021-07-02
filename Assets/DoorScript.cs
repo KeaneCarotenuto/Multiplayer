@@ -7,6 +7,7 @@ public class DoorScript : NetworkBehaviour
 {
 
     public ButtonScript button;
+    public bool pressToClose;
 
     void Start()
     {
@@ -16,7 +17,7 @@ public class DoorScript : NetworkBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (button.isPressed)
+        if ((button.isPressed && !pressToClose) || (!button.isPressed && pressToClose))
         {
             GetComponent<BoxCollider>().enabled = false;
             GetComponent<MeshRenderer>().enabled = false;

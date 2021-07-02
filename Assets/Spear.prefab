@@ -249,9 +249,14 @@ MonoBehaviour:
   playerSpearPos: {fileID: 0}
   hitMask:
     serializedVersion: 2
-    m_Bits: 1792
+    m_Bits: 14080
+  bounceMask:
+    serializedVersion: 2
+    m_Bits: 1536
   velocity: {x: 0, y: 0, z: 0}
   spearPrefab: {fileID: 6959735486721697939}
+  lifetime: 10
+  spawnTime: 0
 --- !u!114 &2665347441613287598
 MonoBehaviour:
   m_ObjectHideFlags: 0

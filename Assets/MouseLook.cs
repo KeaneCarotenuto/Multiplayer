@@ -9,10 +9,20 @@ public class MouseLook : MonoBehaviour
     public Transform playerBody;
     public Transform playerTorso;
     public GameObject head;
+    public GameObject playerCanvas;
 
     public GameObject player;
 
     float xRoation;
+
+    private void OnLevelWasLoaded(int level)
+    {
+        GameObject mc = GameObject.Find("MenuCamera");
+        if (mc)
+        {
+            mc.SetActive(false);
+        }
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -24,9 +34,17 @@ public class MouseLook : MonoBehaviour
         else
         {
             gameObject.SetActive(false);
+            playerCanvas.SetActive(false);
         }
 
         Cursor.lockState = CursorLockMode.Locked;
+
+        GameObject mc = GameObject.Find("MenuCamera");
+
+        if (mc)
+        {
+            mc.SetActive(false);
+        }
     }
 
     // Update is called once per frame

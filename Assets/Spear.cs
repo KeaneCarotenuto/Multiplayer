@@ -23,6 +23,7 @@ public class Spear : NetworkBehaviour
     public Transform playerSpearPos;
 
     public LayerMask hitMask;
+    public LayerMask bounceMask;
 
     public Vector3 velocity;
 
@@ -44,9 +45,11 @@ public class Spear : NetworkBehaviour
         
     }
 
+    [Server]
     private void OnLevelWasLoaded()
     {
-        Destroy(gameObject);
+        NetworkServer.UnSpawn(gameObject);
+        NetworkServer.Destroy(gameObject);
     }
 
     // Update is called once per frame
@@ -55,6 +58,7 @@ public class Spear : NetworkBehaviour
         if (isServer)
         {
             transform.localScale -= new Vector3(0.1f * Time.deltaTime, 0.1f * Time.deltaTime, 0);
+            if (transform.localScale.x <= 0) transform.localScale = new Vector3(0, 0, 0);
 
             if (Time.time - spawnTime >= lifetime)
             {
@@ -84,7 +88,7 @@ public class Spear : NetworkBehaviour
                     }
                     else
                     {
-                        if (_hit.transform.root.GetComponent<PlayerMovement>())
+                        if (bounceMask == (bounceMask | (1 << _hit.transform.gameObject.layer)))
                         {
                             FlipVel();
                         }

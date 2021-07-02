@@ -323,6 +323,12 @@ namespace Mirror
         /// <summary>Starts the client, connects it to the server with networkAddress.</summary>
         public void StartClient()
         {
+            if (!networkAddress.Contains(".") && networkAddress != "localhost")
+            {
+                StopClient();
+                return;
+            }
+
             if (NetworkClient.active)
             {
                 Debug.LogWarning("Client already started.");
@@ -883,6 +889,7 @@ namespace Mirror
 
         void UpdateScene()
         {
+
             if (loadingSceneAsync != null && loadingSceneAsync.isDone)
             {
                 // Debug.Log("ClientChangeScene done readyCon:" + clientReadyConnection);
@@ -1316,5 +1323,10 @@ namespace Mirror
 
         /// <summary>This is called when a host is stopped.</summary>
         public virtual void OnStopHost() {}
+
+        public virtual void SetNetworkAddress(string _new)
+        {
+            networkAddress = _new;
+        }
     }
 }
