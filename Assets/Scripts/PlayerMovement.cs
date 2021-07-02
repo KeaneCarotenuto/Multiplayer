@@ -3,6 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Simple player movement script
+/// </summary>
 public class PlayerMovement : NetworkBehaviour
 {
     public CharacterController controller;
@@ -21,8 +24,17 @@ public class PlayerMovement : NetworkBehaviour
     // Update is called once per frame
     void Update()
     {
+        //only if local player
         if (isLocalPlayer)
         {
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                Application.Quit();
+
+                connectionToServer.Disconnect();
+                connectionToClient.Disconnect();
+            }
+
             isGrounded = false;
 
             Collider[] hits = Physics.OverlapSphere(groundCheck.position, groundDistance, groundMask);

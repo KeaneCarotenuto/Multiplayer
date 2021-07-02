@@ -27,6 +27,7 @@ public class MouseLook : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        //Disable eyes if client, otherwise disable camera and canvas
         if (player.GetComponent<PlayerMovement>().isLocalPlayer)
         {
             head.SetActive(false);
@@ -39,6 +40,7 @@ public class MouseLook : MonoBehaviour
 
         Cursor.lockState = CursorLockMode.Locked;
 
+        //If loaded in, disable menu camera
         GameObject mc = GameObject.Find("MenuCamera");
 
         if (mc)
@@ -50,8 +52,10 @@ public class MouseLook : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //Tab to hide/show cursor, mouse move while hidden to move cam
         if (player.GetComponent<PlayerMovement>().isLocalPlayer)
         {
+
             if (Input.GetKeyDown(KeyCode.Tab))
             {
                 Cursor.lockState = (Cursor.lockState == CursorLockMode.None ? CursorLockMode.Locked : CursorLockMode.None);
@@ -59,6 +63,7 @@ public class MouseLook : MonoBehaviour
 
             if (Cursor.lockState == CursorLockMode.Locked)
             {
+                Cursor.visible = false;
                 float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
                 float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity * Time.deltaTime;
 
@@ -68,6 +73,10 @@ public class MouseLook : MonoBehaviour
                 playerTorso.transform.localRotation = Quaternion.Euler(xRoation, 0f, 0f);
 
                 playerBody.Rotate(playerBody.up * mouseX);
+            }
+            else
+            {
+                Cursor.visible = true;
             }
         }
     }

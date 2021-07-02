@@ -55,17 +55,21 @@ public class Spear : NetworkBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
+        //If is on server, not client
         if (isServer)
         {
+            //shrink over time
             transform.localScale -= new Vector3(0.1f * Time.deltaTime, 0.1f * Time.deltaTime, 0);
             if (transform.localScale.x <= 0) transform.localScale = new Vector3(0, 0, 0);
 
+            //Destroy self after time
             if (Time.time - spawnTime >= lifetime)
             {
                 NetworkServer.UnSpawn(gameObject);
                 NetworkServer.Destroy(gameObject);
             }
 
+            //If is throw, move through space, and stick to things that can be stuck to, or bounce off them
             if (isThrown)
             {
                 velocity.y += gravity * Time.deltaTime;
@@ -104,11 +108,17 @@ public class Spear : NetworkBehaviour
         }
     }
 
+    /// <summary>
+    /// bounce
+    /// </summary>
     private void FlipVel()
     {
         velocity *= -Random.Range(0.8f, 0.95f);
     }
 
+    /// <summary>
+    /// Throw this instance of the spear forwards
+    /// </summary>
     public void Throw()
     {
         RaycastHit[] HitInfo = Physics.RaycastAll(playerCam.transform.position, playerCam.transform.forward, 100f, hitMask);
@@ -136,26 +146,23 @@ public class Spear : NetworkBehaviour
         velocity = transform.forward * throwSpeed;
     }
 
+    //Stick in place
     public void Stick()
     {
         landPos = transform.position;
         transform.parent = null;
         isThrown = false;
 
-
-
         if (isServer)
         {
             RpcUpdateAll(transform);
         }
-
-        //if (true)
-        //{
-        //    transform.localScale *= 10;
-        //    CmdUpdateAll(transform);
-        //}
     }
 
+    /// <summary>
+    /// Not sure if this actually helps, but update the position of spears when they land just to be safe
+    /// </summary>
+    /// <param name="_trans"></param>
     [ClientRpc]
     void RpcUpdateAll(Transform _trans)
     {
@@ -163,6 +170,10 @@ public class Spear : NetworkBehaviour
         transform.rotation = _trans.rotation;
     }
 
+    /// <summary>
+    /// Same as above
+    /// </summary>
+    /// <param name="_trans"></param>
     [Command(requiresAuthority = false)]
     void CmdUpdateAll(Transform _trans)
     {

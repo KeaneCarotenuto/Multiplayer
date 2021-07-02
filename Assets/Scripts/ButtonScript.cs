@@ -15,6 +15,7 @@ public class ButtonScript : NetworkBehaviour
         
     }
 
+    //Check if pressed on server side
     void Update()
     {
         if (isServer)
@@ -23,6 +24,7 @@ public class ButtonScript : NetworkBehaviour
         }
     }
 
+    //Check if anything is close enough that matches the layermask, if so, set pressed to true, and scale to smalelr
     private void CmdCheckPressed()
     {
         if (isServer)

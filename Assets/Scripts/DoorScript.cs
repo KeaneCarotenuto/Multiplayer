@@ -17,6 +17,7 @@ public class DoorScript : NetworkBehaviour
     // Update is called once per frame
     void Update()
     {
+        //If the associated button is pressed, either open or close the door. Otherwise do the opposite
         if ((button.isPressed && !pressToClose) || (!button.isPressed && pressToClose))
         {
             GetComponent<BoxCollider>().enabled = false;

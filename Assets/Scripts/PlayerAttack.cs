@@ -33,7 +33,7 @@ public class PlayerAttack : NetworkBehaviour
     void Update()
     {
         
-
+        //R to restart game, left click to throw spear
         if (isLocalPlayer)
         {
             if (Input.GetKeyDown(KeyCode.R))
@@ -45,6 +45,7 @@ public class PlayerAttack : NetworkBehaviour
                 //NetworkServer.SpawnObjects();
             }
 
+            //dont throw if in red space
             if (Physics.CheckSphere(transform.position, 0.5f, noThrow))
             {
                 noThrowScreen.SetActive(true);
@@ -70,6 +71,9 @@ public class PlayerAttack : NetworkBehaviour
         NetworkManager.singleton.ServerChangeScene("SampleScene");
     }
 
+    /// <summary>
+    /// Spawn spear as server
+    /// </summary>
     [Command]
     private void CmdServerLoadNewSpear()
     {

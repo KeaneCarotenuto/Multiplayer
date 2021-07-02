@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Simple dont destroy on load script
+/// </summary>
 public class DontDestroy : MonoBehaviour
 {
     // Start is called before the first frame update
